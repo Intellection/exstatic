@@ -1,0 +1,14 @@
+[package]
+name = "exstatic"
+version = "0.1.0"
+authors = []
+edition = "2021"
+
+[lib]
+name = "exstatic"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.35.1"
+statrs = "0.18.0"

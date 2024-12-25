@@ -1,0 +1,15 @@
+{
+  "lsp": {
+    "rust-analyzer": {
+      "binary": {
+        "ignore_system_version": true
+      },
+      "initialization_options": {
+        "linkedProjects": ["./native/exstatic/Cargo.toml"],
+        "rust": {
+          "analyzerTargetDir": true
+        }
+      }
+    }
+  }
+}
