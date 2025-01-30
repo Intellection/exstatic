@@ -64,12 +64,6 @@ fn t_cdf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
 }
 
 #[rustler::nif]
-fn t_mean(mean: f64, std_dev: f64, df: f64) -> NifResult<f64> {
-    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
-    t.mean().ok_or_else(|| Error::Term(Box::new("Mean is undefined for df ≤ 1")))
-}
-
-#[rustler::nif]
 fn t_variance(mean: f64, std_dev: f64, df: f64) -> NifResult<f64> {
     let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
     t.variance().ok_or_else(|| Error::Term(Box::new("Variance is undefined for df ≤ 2")))
@@ -82,6 +76,18 @@ fn t_inverse_cdf(mean: f64, std_dev: f64, df: f64, p: f64) -> NifResult<f64> {
     }
     let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
     Ok(t.inverse_cdf(p))
+}
+
+#[rustler::nif]
+fn t_ln_pdf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
+    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    Ok(t.ln_pdf(x))
+}
+
+#[rustler::nif]
+fn t_sf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
+    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    Ok(t.sf(x))
 }
 
 rustler::init!("Elixir.Exstatic.Native");
