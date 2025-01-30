@@ -23,12 +23,16 @@ defmodule Exstatic.Native do
   @spec normal_variance(float()) :: float()
   def normal_variance(_std_dev), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec t_pdf(float(), float(), float(), float()) :: float()
-  def t_pdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
+  @spec standardized_t_pdf(float(), float()) :: float()
+  def standardized_t_pdf(_df, _x), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec t_cdf(float(), float(), float(), float()) :: float()
-  def t_cdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
+  @spec standardized_t_cdf(float(), float()) :: float()
+  def standardized_t_cdf(_df, _x), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec t_variance(float(), float()) :: {:ok, float()} | {:error, String.t()}
-  def t_variance(_std_dev, _df), do: :erlang.nif_error(:nif_not_loaded)
+  @spec standardized_t_sf(float(), float()) :: float()
+  def standardized_t_sf(_df, _x), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec standardized_t_variance(float()) :: {:ok, float()} | {:error, String.t()}
+  def standardized_t_variance(_df), do: :erlang.nif_error(:nif_not_loaded)
 end
+
