@@ -22,4 +22,22 @@ defmodule Exstatic.Native do
 
   @spec normal_variance(float()) :: float()
   def normal_variance(_std_dev), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_pdf(float(), float(), float(), float()) :: float()
+  def t_pdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_cdf(float(), float(), float(), float()) :: float()
+  def t_cdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_variance(float(), float(), float()) :: {:ok, float()} | {:error, String.t()}
+  def t_variance(_mean, _std_dev, _df), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_inverse_cdf(float(), float(), float(), float()) :: {:ok, float()} | {:error, String.t()}
+  def t_inverse_cdf(_mean, _std_dev, _df, _p), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_ln_pdf(float(), float(), float(), float()) :: float()
+  def t_ln_pdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec t_sf(float(), float(), float(), float()) :: float()
+  def t_sf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
 end

@@ -52,7 +52,6 @@ defmodule Exstatic.Distribution.Normal do
       iex> Normal.new(0.0, -1.0)
       {:error, :invalid_std_dev}
   """
-  @impl Exstatic.Distribution
   def new(mean, std_dev) when is_number(mean) and is_number(std_dev) do
     if std_dev <= 0 do
       {:error, :invalid_std_dev}

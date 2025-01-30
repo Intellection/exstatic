@@ -2,7 +2,7 @@ defmodule Exstatic.Distribution do
   @type t() :: struct()
   @type error() :: {:error, atom()}
 
-  @callback mean(distribution :: t()) :: float()
+  @callback mean(distribution :: t()) :: float() | :undefined
   @callback variance(distribution :: t()) :: float()
   @callback std_dev(distribution :: t()) :: float()
   @callback entropy(distribution :: t()) :: float()
