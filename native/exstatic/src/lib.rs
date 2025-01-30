@@ -68,7 +68,7 @@ fn t_variance(std_dev: f64, df: f64) -> NifResult<f64> {
     if df <= 1.0 {
         return Err(Error::Term(Box::new("Variance is undefined for df ≤ 1")));
     } else if df > 1.0 && df <= 2.0 {
-        return Ok(f64::INFINITY);
+        return Err(Error::Term(Box::new("Variance is infinite for 1 < df ≤ 2")));
     }
 
     let t = StudentsT::new(0.0, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
