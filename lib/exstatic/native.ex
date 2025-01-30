@@ -29,8 +29,8 @@ defmodule Exstatic.Native do
   @spec t_cdf(float(), float(), float(), float()) :: float()
   def t_cdf(_mean, _std_dev, _df, _x), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec t_variance(float(), float(), float()) :: {:ok, float()} | {:error, String.t()}
-  def t_variance(_mean, _std_dev, _df), do: :erlang.nif_error(:nif_not_loaded)
+  @spec t_variance(float(), float()) :: {:ok, float()} | {:error, String.t()}
+  def t_variance(_std_dev, _df), do: :erlang.nif_error(:nif_not_loaded)
 
   @spec t_inverse_cdf(float(), float(), float(), float()) :: {:ok, float()} | {:error, String.t()}
   def t_inverse_cdf(_mean, _std_dev, _df, _p), do: :erlang.nif_error(:nif_not_loaded)

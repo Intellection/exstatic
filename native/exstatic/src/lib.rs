@@ -64,9 +64,15 @@ fn t_cdf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
 }
 
 #[rustler::nif]
-fn t_variance(mean: f64, std_dev: f64, df: f64) -> NifResult<f64> {
-    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
-    t.variance().ok_or_else(|| Error::Term(Box::new("Variance is undefined for df ≤ 2")))
+fn t_variance(std_dev: f64, df: f64) -> NifResult<f64> {
+    if df <= 1.0 {
+        return Err(Error::Term(Box::new("Variance is undefined for df ≤ 1")));
+    } else if df > 1.0 && df <= 2.0 {
+        return Ok(f64::INFINITY);
+    }
+
+    let t = StudentsT::new(0.0, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    t.variance().ok_or_else(|| Error::Term(Box::new("Failed to calculate variance")))
 }
 
 #[rustler::nif]
