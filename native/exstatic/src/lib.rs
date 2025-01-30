@@ -75,25 +75,4 @@ fn t_variance(std_dev: f64, df: f64) -> NifResult<f64> {
     t.variance().ok_or_else(|| Error::Term(Box::new("Failed to calculate variance")))
 }
 
-#[rustler::nif]
-fn t_inverse_cdf(mean: f64, std_dev: f64, df: f64, p: f64) -> NifResult<f64> {
-    if !(0.0..=1.0).contains(&p) {
-        return Err(Error::Term(Box::new("p must be in [0, 1]")));
-    }
-    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
-    Ok(t.inverse_cdf(p))
-}
-
-#[rustler::nif]
-fn t_ln_pdf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
-    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
-    Ok(t.ln_pdf(x))
-}
-
-#[rustler::nif]
-fn t_sf(mean: f64, std_dev: f64, df: f64, x: f64) -> NifResult<f64> {
-    let t = StudentsT::new(mean, std_dev, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
-    Ok(t.sf(x))
-}
-
 rustler::init!("Elixir.Exstatic.Native");
