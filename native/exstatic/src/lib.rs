@@ -1,5 +1,5 @@
 use rustler::{Error, NifResult};
-use statrs::distribution::{Continuous, ContinuousCDF, Normal};
+use statrs::distribution::{Continuous, ContinuousCDF, Normal, StudentsT};
 use statrs::statistics::Distribution;
 
 #[rustler::nif]
@@ -49,6 +49,48 @@ fn normal_inverse_cdf(mean: f64, std_dev: f64, p: f64) -> NifResult<f64> {
         return Err(Error::Term(Box::new("p must be in [0, 1]")));
     }
     Ok(normal.inverse_cdf(p))
+}
+
+#[rustler::nif]
+fn standardized_t_pdf(df: f64, x: f64) -> NifResult<f64> {
+    if df <= 1.0 {
+        return Err(Error::Term(Box::new("Degrees of freedom must be greater than 1")));
+    }
+
+    let t = StudentsT::new(0.0, 1.0, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    Ok(t.pdf(x))
+}
+
+#[rustler::nif]
+fn standardized_t_cdf(df: f64, x: f64) -> NifResult<f64> {
+    if df <= 1.0 {
+        return Err(Error::Term(Box::new("Degrees of freedom must be greater than 1")));
+    }
+
+    let t = StudentsT::new(0.0, 1.0, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    Ok(t.cdf(x))
+}
+
+#[rustler::nif]
+fn standardized_t_sf(df: f64, x: f64) -> NifResult<f64> {
+    if df <= 1.0 {
+        return Err(Error::Term(Box::new("Degrees of freedom must be greater than 1")));
+    }
+
+    let t = StudentsT::new(0.0, 1.0, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    Ok(1.0 - t.cdf(x))
+}
+
+#[rustler::nif]
+fn standardized_t_variance(df: f64) -> NifResult<f64> {
+    if df <= 1.0 {
+        return Err(Error::Term(Box::new("Variance is undefined for df ≤ 1")));
+    } else if df > 1.0 && df <= 2.0 {
+        return Err(Error::Term(Box::new("Variance is infinite for 1 < df ≤ 2")));
+    }
+
+    let t = StudentsT::new(0.0, 1.0, df).map_err(|e| Error::Term(Box::new(e.to_string())))?;
+    t.variance().ok_or_else(|| Error::Term(Box::new("Failed to calculate variance")))
 }
 
 rustler::init!("Elixir.Exstatic.Native");
