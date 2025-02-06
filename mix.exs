@@ -14,6 +14,7 @@ defmodule Exstatic.MixProject do
       deps: deps(),
       dialyzer: [plt_add_apps: [:mix]],
       description: description(),
+      docs: docs(),
       package: package(),
       name: "Exstatic",
       source_url: @source_url
@@ -42,6 +43,14 @@ defmodule Exstatic.MixProject do
     "A statistical distribution library for Elixir with native Rust implementations."
   end
 
+  defp docs do
+    [
+      main: "readme",
+      source_ref: "v#{@version}",
+      extras: ["README.md", "CHANGELOG.md"]
+    ]
+  end
+
   defp package do
     [
       name: "exstatic",
@@ -57,7 +66,8 @@ defmodule Exstatic.MixProject do
     [
       {:rustler, "~> 0.35.1", runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
     ]
   end
 end
