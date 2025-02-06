@@ -17,7 +17,13 @@ defmodule Exstatic.MixProject do
       docs: docs(),
       package: package(),
       name: "Exstatic",
-      source_url: @source_url
+      source_url: @source_url,
+      test_coverage: [
+        summary: [threshold: 90],
+        ignore_modules: [
+          Exstatic.Native
+        ]
+      ]
     ]
   end
 
