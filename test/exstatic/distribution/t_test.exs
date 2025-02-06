@@ -68,4 +68,3 @@ defmodule Exstatic.Distribution.StandardizedTTest do
     end
   end
 end
-

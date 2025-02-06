@@ -35,4 +35,3 @@ defmodule Exstatic.Native do
   @spec standardized_t_variance(float()) :: {:ok, float()} | {:error, String.t()}
   def standardized_t_variance(_df), do: :erlang.nif_error(:nif_not_loaded)
 end
-
