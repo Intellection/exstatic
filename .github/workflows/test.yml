@@ -58,10 +58,13 @@ jobs:
         run: mix deps.get
 
       - name: Build Rust Code
-        run: cargo build --release
+        run: |
+          cd native/exstatic
+          cargo clean
+          cargo build --release
 
       - name: Verify Rust Build Output
-        run: ls -l target/release/ || true
+        run: ls -l native/exstatic/target/release/ || true
 
       - name: Compile Elixir Code
         run: mix compile --warnings-as-errors
