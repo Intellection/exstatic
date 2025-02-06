@@ -73,7 +73,7 @@ defmodule Exstatic.Distribution.StandardizedT do
   Returns the variance of the t-distribution.
 
   - If `1 < df ≤ 2`, the variance is `:infinity`.
-  - Otherwise, the variance is computed using `Exstatic.Native.standardized_t_variance/1`.
+  - Otherwise, the variance is computed using the native Rust implementation.
 
   ## Examples
 
