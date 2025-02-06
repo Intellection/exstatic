@@ -1,4 +1,7 @@
 defmodule Exstatic.Distribution do
+  @moduledoc """
+  A behaviour for probability distributions.
+  """
   @type t() :: struct()
   @type error() :: {:error, atom()}
 

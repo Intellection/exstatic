@@ -56,7 +56,7 @@ Full documentation can be found at [https://hexdocs.pm/exstatic](https://hexdocs
 
 ### Requirements
 
-- Elixir ~> 1.17
+- Elixir ~> 1.18
 - Rust (for compiling NIFs)
 
 ### Setup
