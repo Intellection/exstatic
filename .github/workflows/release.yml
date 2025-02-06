@@ -1,0 +1,20 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: 1.18
+          otp-version: 27.2
+      - name: Fetch dependencies
+        run: mix deps.get
+      - name: Publish package
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+        run: mix hex.publish --organization ${{ vars.HEX_ORG }} --replace --yes

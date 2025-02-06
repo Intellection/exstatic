@@ -1,7 +1,7 @@
 # Exstatic
 
-[![Hex.pm](https://img.shields.io/hexpm/v/exstatic.svg)](https://hex.pm/packages/exstatic)
-[![Docs](https://img.shields.io/badge/hex-docs-blue.svg)](https://hexdocs.pm/exstatic)
+[![Hex.pm](https://img.shields.io/hexpm/v/exstatic.svg)](https://hex.pm/packages/zappi/exstatic)
+[![Docs](https://img.shields.io/badge/hex-docs-blue.svg)](https://zappi.hexdocs.pm/exstatic)
 
 Exstatic provides idiomatic Elixir interfaces for working with statistical distributions. Built on top of the battle-tested [statrs](https://docs.rs/statrs) Rust library, it combines Elixir's elegant syntax with Rust's numerical computing capabilities.
 
@@ -34,7 +34,7 @@ Normal.variance(dist)  # => 1.0
 
 ### Requirements
 
-- Elixir ~> 1.17
+- Elixir ~> 1.18
 
 Precompiled NIF binaries are included for common platforms. No additional system dependencies are required for normal usage.
 
@@ -56,7 +56,7 @@ Full documentation can be found at [https://hexdocs.pm/exstatic](https://hexdocs
 
 ### Requirements
 
-- Elixir ~> 1.17
+- Elixir ~> 1.18
 - Rust (for compiling NIFs)
 
 ### Setup

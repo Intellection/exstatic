@@ -20,7 +20,7 @@ defmodule Exstatic.Distribution.Normal do
   """
 
   @behaviour Exstatic.Distribution
-  @behaviour Exstatic.Continuous
+  @behaviour Exstatic.ContinuousPDF
   @behaviour Exstatic.ContinuousCDF
 
   defstruct [:mean, :std_dev]
@@ -52,6 +52,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> Normal.new(0.0, -1.0)
       {:error, :invalid_std_dev}
   """
+  @spec new(float(), float()) :: {:ok, t()} | {:error, :invalid_std_dev}
   def new(mean, std_dev) when is_number(mean) and is_number(std_dev) do
     if std_dev <= 0 do
       {:error, :invalid_std_dev}
@@ -63,7 +64,8 @@ defmodule Exstatic.Distribution.Normal do
   @doc """
   Creates a standard normal distribution with mean 0 and standard deviation 1.
   """
-  def standard(), do: %__MODULE__{mean: 0.0, std_dev: 1.0}
+  @spec standard() :: t()
+  def standard, do: %__MODULE__{mean: 0.0, std_dev: 1.0}
 
   @impl Exstatic.Distribution
   def mean(%__MODULE__{mean: mean}), do: mean
@@ -92,7 +94,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> TestHelper.assert_in_delta(Normal.pdf(n, 0.0), 0.03989422804014326779399, 1.0e-17)
       true
   """
-  @impl Exstatic.Continuous
+  @impl Exstatic.ContinuousPDF
   def pdf(%__MODULE__{} = dist, x) when is_number(x) do
     Exstatic.Native.normal_pdf(dist.mean, dist.std_dev, x)
   end
@@ -274,7 +276,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> TestHelper.assert_in_delta(result, -0.9189385332046727) # approximately -ln(√(2π))
       true
   """
-  @impl Exstatic.Continuous
+  @impl Exstatic.ContinuousPDF
   def ln_pdf(%__MODULE__{} = dist, x) when is_number(x) do
     Exstatic.Native.normal_ln_pdf(dist.mean, dist.std_dev, x)
   end

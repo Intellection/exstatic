@@ -22,7 +22,7 @@ defmodule Exstatic.Distribution.StandardizedT do
   """
 
   @behaviour Exstatic.Distribution
-  @behaviour Exstatic.Continuous
+  @behaviour Exstatic.ContinuousPDF
   @behaviour Exstatic.ContinuousCDF
 
   defstruct [:df]
@@ -47,6 +47,7 @@ defmodule Exstatic.Distribution.StandardizedT do
       iex> StandardizedT.new(-5.0)
       {:error, :invalid_df}
   """
+  @spec new(float()) :: {:ok, t()} | {:error, :invalid_df}
   def new(df) when is_number(df) and df > 1 do
     {:ok, %__MODULE__{df: df}}
   end
@@ -65,13 +66,14 @@ defmodule Exstatic.Distribution.StandardizedT do
       0.0
   """
   @impl Exstatic.Distribution
+  @spec mean(t) :: float()
   def mean(_t), do: 0.0
 
   @doc """
   Returns the variance of the t-distribution.
 
   - If `1 < df ≤ 2`, the variance is `:infinity`.
-  - Otherwise, the variance is computed using `Exstatic.Native.standardized_t_variance/1`.
+  - Otherwise, the variance is computed using the native Rust implementation.
 
   ## Examples
 
@@ -98,7 +100,7 @@ defmodule Exstatic.Distribution.StandardizedT do
       iex> TestHelper.assert_in_delta(StandardizedT.pdf(t, 0.0), 0.37960669, 1.0e-6)
       true
   """
-  @impl Exstatic.Continuous
+  @impl Exstatic.ContinuousPDF
   def pdf(%__MODULE__{} = dist, x) when is_number(x) do
     Exstatic.Native.standardized_t_pdf(dist.df, x)
   end
