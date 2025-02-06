@@ -20,7 +20,7 @@ defmodule Exstatic.Distribution.Normal do
   """
 
   @behaviour Exstatic.Distribution
-  @behaviour Exstatic.Continuous
+  @behaviour Exstatic.ContinuousPDF
   @behaviour Exstatic.ContinuousCDF
 
   defstruct [:mean, :std_dev]
@@ -92,7 +92,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> TestHelper.assert_in_delta(Normal.pdf(n, 0.0), 0.03989422804014326779399, 1.0e-17)
       true
   """
-  @impl Exstatic.Continuous
+  @impl Exstatic.ContinuousPDF
   def pdf(%__MODULE__{} = dist, x) when is_number(x) do
     Exstatic.Native.normal_pdf(dist.mean, dist.std_dev, x)
   end
@@ -274,7 +274,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> TestHelper.assert_in_delta(result, -0.9189385332046727) # approximately -ln(√(2π))
       true
   """
-  @impl Exstatic.Continuous
+  @impl Exstatic.ContinuousPDF
   def ln_pdf(%__MODULE__{} = dist, x) when is_number(x) do
     Exstatic.Native.normal_ln_pdf(dist.mean, dist.std_dev, x)
   end

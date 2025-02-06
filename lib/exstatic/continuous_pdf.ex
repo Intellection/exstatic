@@ -1,4 +1,4 @@
-defmodule Exstatic.Continuous do
+defmodule Exstatic.ContinuousPDF do
   @moduledoc """
   Defines the behaviour for continuous probability distributions that support 
   probability density function (PDF) calculations.
