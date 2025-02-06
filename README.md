@@ -1,7 +1,7 @@
 # Exstatic
 
-[![Hex.pm](https://img.shields.io/hexpm/v/exstatic.svg)](https://hex.pm/packages/exstatic)
-[![Docs](https://img.shields.io/badge/hex-docs-blue.svg)](https://hexdocs.pm/exstatic)
+[![Hex.pm](https://img.shields.io/hexpm/v/exstatic.svg)](https://hex.pm/packages/zappi/exstatic)
+[![Docs](https://img.shields.io/badge/hex-docs-blue.svg)](https://zappi.hexdocs.pm/exstatic)
 
 Exstatic provides idiomatic Elixir interfaces for working with statistical distributions. Built on top of the battle-tested [statrs](https://docs.rs/statrs) Rust library, it combines Elixir's elegant syntax with Rust's numerical computing capabilities.
 
