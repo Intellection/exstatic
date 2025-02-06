@@ -62,6 +62,8 @@ jobs:
           cd native/exstatic
           cargo clean
           cargo build --release
+          mkdir -p ../../../priv/native
+          cp target/release/libexstatic.so ../../../priv/native/
 
       - name: Verify Rust Build Output
         run: ls -l native/exstatic/target/release/ || true
