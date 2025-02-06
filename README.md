@@ -34,7 +34,7 @@ Normal.variance(dist)  # => 1.0
 
 ### Requirements
 
-- Elixir ~> 1.17
+- Elixir ~> 1.18
 
 Precompiled NIF binaries are included for common platforms. No additional system dependencies are required for normal usage.
 

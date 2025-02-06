@@ -1,14 +1,22 @@
 defmodule Exstatic.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/intellection/exstatic"
+
   def project do
     [
       app: :exstatic,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_apps: [:mix]],
+      description: description(),
+      package: package(),
+      name: "Exstatic",
+      source_url: @source_url
     ]
   end
 
@@ -27,6 +35,20 @@ defmodule Exstatic.MixProject do
         "credo --all --mute-exit-status",
         "dialyzer"
       ]
+    ]
+  end
+
+  defp description do
+    "A statistical distribution library for Elixir with native Rust implementations."
+  end
+
+  defp package do
+    [
+      name: "exstatic",
+      organization: "zappi",
+      files: ~w(lib .formatter.exs mix.exs README*),
+      licenses: ["MIT"],
+      links: %{"GitHub" => @source_url}
     ]
   end
 
