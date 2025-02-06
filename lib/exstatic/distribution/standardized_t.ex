@@ -47,6 +47,7 @@ defmodule Exstatic.Distribution.StandardizedT do
       iex> StandardizedT.new(-5.0)
       {:error, :invalid_df}
   """
+  @spec new(float()) :: {:ok, t()} | {:error, :invalid_df}
   def new(df) when is_number(df) and df > 1 do
     {:ok, %__MODULE__{df: df}}
   end
@@ -65,6 +66,7 @@ defmodule Exstatic.Distribution.StandardizedT do
       0.0
   """
   @impl Exstatic.Distribution
+  @spec mean(t) :: float()
   def mean(_t), do: 0.0
 
   @doc """

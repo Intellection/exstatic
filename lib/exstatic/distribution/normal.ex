@@ -52,6 +52,7 @@ defmodule Exstatic.Distribution.Normal do
       iex> Normal.new(0.0, -1.0)
       {:error, :invalid_std_dev}
   """
+  @spec new(float(), float()) :: {:ok, t()} | {:error, :invalid_std_dev}
   def new(mean, std_dev) when is_number(mean) and is_number(std_dev) do
     if std_dev <= 0 do
       {:error, :invalid_std_dev}
@@ -63,7 +64,8 @@ defmodule Exstatic.Distribution.Normal do
   @doc """
   Creates a standard normal distribution with mean 0 and standard deviation 1.
   """
-  def standard(), do: %__MODULE__{mean: 0.0, std_dev: 1.0}
+  @spec standard() :: t()
+  def standard, do: %__MODULE__{mean: 0.0, std_dev: 1.0}
 
   @impl Exstatic.Distribution
   def mean(%__MODULE__{mean: mean}), do: mean
