@@ -4,6 +4,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   test:
     name: Test (Elixir ${{ matrix.elixir }} | OTP ${{ matrix.otp }})
@@ -27,7 +28,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Cache dependencies
+      - name: Check Rust Installation
+        run: rustc --version
+
+      - name: Cache Rust Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Elixir dependencies
         uses: actions/cache@v4
         id: cache-deps
         with:
@@ -38,15 +51,19 @@ jobs:
             mix-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             mix-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-
-      - name: Install dependencies
+
+      - name: Install Elixir dependencies
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
         run: mix deps.get
 
-      - name: Compile Rust NIF
-        run: mix deps.compile
+      - name: Build Rust Code
+        run: cargo build --release
 
-      - name: Compile
+      - name: Verify Rust Build Output
+        run: ls -l target/release/ || true
+
+      - name: Compile Elixir Code
         run: mix compile --warnings-as-errors
 
       - name: Check for unused packages
@@ -58,7 +75,7 @@ jobs:
 
       - run: mix dialyzer
 
-      - name: Check for abandonded packages
+      - name: Check for abandoned packages
         run: mix hex.audit
 
       - name: Check outdated dependencies
@@ -78,19 +95,3 @@ jobs:
 
       - name: Scan for security vulnerabilities
         run: mix sobelow --exit --threshold medium
-
-  publish:
-    name: Publish
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: erlef/setup-beam@v1
-        with:
-          elixir-version: 1.18
-          otp-version: 27.2
-      - name: Fetch dependencies
-        run: mix deps.get
-      - name: Publish package
-        env:
-          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
-        run: mix hex.publish --organization ${{ vars.HEX_ORG }} --dry-run --replace --yes
