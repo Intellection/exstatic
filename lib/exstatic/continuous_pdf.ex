@@ -17,4 +17,6 @@ defmodule Exstatic.ContinuousPDF do
 
   @callback pdf(distribution :: t(), x :: float()) :: float()
   @callback ln_pdf(distribution :: t(), x :: float()) :: float()
+
+  @optional_callbacks ln_pdf: 2
 end

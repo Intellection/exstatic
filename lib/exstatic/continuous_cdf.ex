@@ -18,4 +18,6 @@ defmodule Exstatic.ContinuousCDF do
   @callback sf(distribution :: t(), x :: float()) :: float()
   @callback inverse_cdf(distribution :: t(), p :: float()) ::
               {:ok, float()} | {:error, :invalid_probability}
+
+  @optional_callbacks inverse_cdf: 2
 end
