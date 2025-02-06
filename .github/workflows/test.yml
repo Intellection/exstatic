@@ -43,6 +43,9 @@ jobs:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
         run: mix deps.get
 
+      - name: Compile Rust NIF
+        run: mix deps.compile
+
       - name: Compile
         run: mix compile --warnings-as-errors
 
