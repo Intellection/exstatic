@@ -1,0 +1,87 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  EXSTATIC_BUILD: true
+  MIX_ENV: test
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        include:
+          - otp_version: "27.2"
+            elixir_version: "1.18"
+            os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    name: Test on Elixir ${{ matrix.elixir_version }} / OTP ${{ matrix.otp_version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Elixir and Erlang
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ matrix.otp_version }}
+          elixir-version: ${{ matrix.elixir_version }}
+
+      - name: Cache Mix dependencies
+        uses: actions/cache@v4
+        id: cache-deps
+        with:
+          path: |
+            deps
+            _build
+            _build/test
+          key: mix-${{ runner.os }}-${{ matrix.elixir_version }}-${{ matrix.otp_version }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            mix-${{ runner.os }}-${{ matrix.elixir_version }}-${{ matrix.otp_version }}-
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: native/exstatic
+
+      - name: Install dependencies
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Check for unused packages
+        run: mix deps.unlock --check-unused
+
+      - name: Check code formatting
+        run: mix format --check-formatted
+
+      - name: Run Credo (Code Linter)
+        run: mix credo --strict
+
+      - name: Run Dialyzer (Static Analysis)
+        run: mix dialyzer
+
+      - name: Check for abandoned dependencies
+        run: mix hex.audit
+
+      - name: Check for outdated dependencies
+        run: mix hex.outdated --within-requirements || true
+
+      - name: Run tests
+        run: mix test
+
+      - name: Run tests with coverage
+        run: mix test --cover --export-coverage default
+
+      - name: Check test coverage
+        run: mix test.coverage
+
+      - name: Scan for security vulnerabilities
+        run: mix sobelow --exit --threshold medium
