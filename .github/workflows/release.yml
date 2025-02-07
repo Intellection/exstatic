@@ -1,20 +1,84 @@
-name: Release
+name: Build Precompiled NIFs
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+    paths:
+      - "native/**"
+      - ".github/workflows/release.yml"
+    tags:
+      - "*"
+  pull_request:
+    paths:
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
+
 jobs:
-  publish:
-    name: Publish
-    runs-on: ubuntu-22.04
+  build_release:
+    name: NIF ${{ matrix.nif }} - ${{ matrix.job.target }} (${{ matrix.job.os }})
+    runs-on: ${{ matrix.job.os }}
+
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        nif: ["2.16"]  # Only build for OTP 26 and 27
+        job:
+          - { target: aarch64-apple-darwin, os: macos-13 }
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04, use-cross: true }
+          - { target: x86_64-apple-darwin, os: macos-13 }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: erlef/setup-beam@v1
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Extract project version
+        shell: bash
+        run: |
+          echo "PROJECT_VERSION=$(sed -n 's/^  @version "\(.*\)"/\1/p' mix.exs | head -n1)" >> $GITHUB_ENV
+
+      - name: Add Rust target
+        shell: bash
+        run: rustup target add ${{ matrix.job.target }}
+
+      - uses: Swatinem/rust-cache@v2
         with:
-          elixir-version: 1.18
-          otp-version: 27.2
-      - name: Fetch dependencies
-        run: mix deps.get
-      - name: Publish package
-        env:
-          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
-        run: mix hex.publish --organization ${{ vars.HEX_ORG }} --replace --yes
+          prefix-key: v0-precomp
+          shared-key: ${{ matrix.job.target }}-${{ matrix.nif }}
+          workspaces: |
+            native/exstatic
+
+      - name: Build the project
+        id: build-crate
+        uses: philss/rustler-precompiled-action@v1.1.4
+        with:
+          project-name: exstatic
+          project-version: ${{ env.PROJECT_VERSION }}
+          target: ${{ matrix.job.target }}
+          nif-version: ${{ matrix.nif }}
+          use-cross: ${{ matrix.job.use-cross }}
+          project-dir: "native/exstatic"
+
+      - name: Artifact attestation (security verification)
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: ${{ steps.build-crate.outputs.file-path }}
+
+      - name: Upload NIF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build-crate.outputs.file-name }}
+          path: ${{ steps.build-crate.outputs.file-path }}
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ steps.build-crate.outputs.file-path }}
+        if: startsWith(github.ref, 'refs/tags/')
