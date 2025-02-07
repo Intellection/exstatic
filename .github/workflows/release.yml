@@ -16,7 +16,7 @@ on:
 
 jobs:
   compile_nifs:
-    name: Compile & Upload NIFs / ${{ matrix.job.platform }} (NIF ${{ matrix.nif }})
+    name: ${{ matrix.job.platform }} (NIF ${{ matrix.nif }})
     runs-on: ${{ matrix.job.os }}
 
     permissions:
@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        nif: ["2.16"]  # Only build for OTP 26 and 27
+        nif: ["2.16"]
         job:
           - { target: aarch64-apple-darwin, os: macos-13, platform: "macOS (ARM64)" }
           - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04, use-cross: true, platform: "Linux (ARM64)" }
