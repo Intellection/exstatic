@@ -71,7 +71,6 @@ defmodule Exstatic.MixProject do
   defp deps do
     [
       {:rustler_precompiled, "~> 0.8"},
-      # Rustler is required if you build the NIFs yourself
       {:rustler, ">= 0.0.0", optional: true},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
