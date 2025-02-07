@@ -1,4 +1,4 @@
-name: Build Precompiled NIFs
+name: Compile & Upload NIFs
 
 on:
   push:
@@ -15,14 +15,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_release:
-    name: NIF ${{ matrix.nif }} - ${{ matrix.job.target }} (${{ matrix.job.os }})
+  compile_nifs:
+    name: Compile & Upload NIFs / ${{ matrix.job.platform }} (NIF ${{ matrix.nif }})
     runs-on: ${{ matrix.job.os }}
 
     permissions:
       contents: write
       id-token: write
-      attestations: write
 
     strategy:
       fail-fast: false
@@ -47,7 +46,7 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.job.target }}
 
-      - name: Install Cross for cross-compilation (needed for linux ARM64 target)
+      - name: Install Cross for cross-compilation
         if: ${{ matrix.job.use-cross }}
         run: cargo install cross --git https://github.com/cross-rs/cross
 
@@ -63,7 +62,7 @@ jobs:
           workspaces: |
             native/exstatic
 
-      - name: Build the project
+      - name: Compile the NIFs
         id: build-crate
         uses: philss/rustler-precompiled-action@v1.1.4
         with:
@@ -74,13 +73,13 @@ jobs:
           use-cross: ${{ matrix.job.use-cross }}
           project-dir: "native/exstatic"
 
-      - name: Upload NIF artifact
+      - name: Upload compiled NIF artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build-crate.outputs.file-name }}
           path: ${{ steps.build-crate.outputs.file-path }}
 
-      - name: Publish to GitHub Releases
+      - name: Publish NIFs to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           files: |
