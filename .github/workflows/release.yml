@@ -74,11 +74,6 @@ jobs:
           use-cross: ${{ matrix.job.use-cross }}
           project-dir: "native/exstatic"
 
-      - name: Artifact attestation (security verification)
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: ${{ steps.build-crate.outputs.file-path }}
-
       - name: Upload NIF artifact
         uses: actions/upload-artifact@v4
         with:
