@@ -7,7 +7,7 @@ defmodule Exstatic.Native do
     crate: "exstatic",
     base_url: "https://github.com/intellection/exstatic/releases/download/v#{version}",
     force_build: System.get_env("EXSTATIC_BUILD") == "true",
-    nif_versions: ["2.17"],
+    nif_versions: ["2.16"],
     version: version
 
   @spec normal_pdf(float(), float(), float()) :: float()
