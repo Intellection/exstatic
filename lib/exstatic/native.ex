@@ -1,14 +1,20 @@
 defmodule Exstatic.Native do
   @moduledoc false
-  version = Mix.Project.config()[:version]
+  config = Mix.Project.config()
 
   use RustlerPrecompiled,
     otp_app: :exstatic,
     crate: "exstatic",
-    base_url: "https://github.com/intellection/exstatic/releases/download/v#{version}",
+    base_url: "#{config[:source_url]}/releases/download/v#{config[:version]}",
     force_build: System.get_env("EXSTATIC_BUILD") == "true",
     nif_versions: ["2.16"],
-    version: version
+    version: config[:version],
+    targets: ~w(
+      aarch64-apple-darwin
+      x86_64-apple-darwin
+      aarch64-unknown-linux-gnu
+      x86_64-unknown-linux-gnu
+    )
 
   @spec normal_pdf(float(), float(), float()) :: float()
   def normal_pdf(_mean, _std_dev, _x), do: :erlang.nif_error(:nif_not_loaded)
