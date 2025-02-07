@@ -29,10 +29,10 @@ jobs:
       matrix:
         nif: ["2.16"]  # Only build for OTP 26 and 27
         job:
-          - { target: aarch64-apple-darwin, os: macos-13 }
-          - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04, use-cross: true }
-          - { target: x86_64-apple-darwin, os: macos-13 }
-          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
+          - { target: aarch64-apple-darwin, os: macos-13, platform: "macOS (ARM64)" }
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04, use-cross: true, platform: "Linux (ARM64)" }
+          - { target: x86_64-apple-darwin, os: macos-13, platform: "macOS (x86_64)" }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04, platform: "Linux (x86_64)" }
 
     env:
       EXSTATIC_BUILD: true  # Ensure RustlerPrecompiled forces a build
@@ -47,7 +47,7 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.job.target }}
 
-      - name: Install Cross for cross-compilation (if needed)
+      - name: Install Cross for cross-compilation (needed for linux ARM64 target)
         if: ${{ matrix.job.use-cross }}
         run: cargo install cross --git https://github.com/cross-rs/cross
 
