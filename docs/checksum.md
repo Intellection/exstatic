@@ -31,5 +31,3 @@ Below is an example of what the `checksum-Elixir.Exstatic.Native.exs` file looks
 ```
 
 Each entry in the map corresponds to a precompiled NIF binary, with its respective SHA-256 checksum. These checksums ensure the integrity of the binaries when downloaded and used in different environments.
-
-By verifying these checksums, `RustlerPrecompiled` ensures that users receive the correct, untampered precompiled binaries for their system.
