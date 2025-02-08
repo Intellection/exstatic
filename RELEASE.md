@@ -38,9 +38,27 @@ This triggers the `release.yml` GitHub Action, which:
 - ✅ Uploads them to GitHub Releases.
 - ✅ Makes them available for `RustlerPrecompiled`.
 
-## **4️⃣   Publish to Hex.pm**
+## **4️⃣  Generate & Include Checksum File**
 
-Once the GitHub release is live, publish the package to Hex.pm:
+**After the GitHub release is live and the CI has built the precompiled NIFs**, you need to generate the checksum file:
+
+```sh
+mix rustler_precompiled.download Exstatic.Native --all --print
+```
+
+This pulls the NIF binaries from the latest GitHub release and uses them to generate a `checksum-Elixir.Exstatic.Native.exs` file. 
+
+Run the following command to verify the package contents before publishing:
+
+```sh
+mix hex.build --unpack
+```
+
+You should see `checksum-Elixir.Exstatic.Native.exs` included in th list of files. Don't check the checksum file into version control.
+
+## **5️⃣  Publish to Hex.pm**
+
+Once the GitHub release is live and the checksum file is included, publish the package to Hex.pm:
 
 ```sh
 mix hex.user auth   # Authenticate if not already logged in
@@ -48,7 +66,7 @@ mix hex.publish     # Publish the package
 ```
 
 ### Important Notes:
-- You **must have write access** to Zappi's Hex registry to publish.
+- You **must have write access** to Zappi's Hex registry to publish (ask Brendon if you don't).
 - **Ensure you are on the `main` branch**, and it matches `origin/main`, as `mix hex.publish` publishes from your **local copy**, not GitHub.
 
 ## **6️⃣  Verify Installation**
@@ -63,4 +81,3 @@ mix compile  # Should download precompiled NIFs instead of compiling Rust
 ```
 
 If this works **without recompiling Rust**, the release is successful! 🎉
----
