@@ -102,7 +102,7 @@ defmodule Exstatic.ReleaseHelper do
 
   defp start_finch do
     unless Process.whereis(Req.Finch) do
-      {:ok, _} = Finch.start_link(name: Req.Finch)
+      {:ok, _pid} = Finch.start_link(name: Req.Finch)
     end
   end
 end
