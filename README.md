@@ -36,8 +36,6 @@ Normal.variance(dist)  # => 1.0
 
 - Elixir ~> 1.18
 
-Precompiled NIF binaries are included for common platforms. No additional system dependencies are required for normal usage.
-
 Add `exstatic` to your list of dependencies in `mix.exs`:
 
 ```elixir
@@ -48,9 +46,14 @@ def deps do
 end
 ```
 
+Precompiled NIF binaries are included in releases for common platforms. Downloading precompiled binaries requires you have read access to this repository,
+you must set the environment variable `EXSTATIC_GITHUB_TOKEN` with a GitHub Personal Access Token (PAT) with sufficient privileges - 
+please see [here](https://github.com/Intellection/exstatic/blob/main/docs/github_token_guide.md) for more details.
+
+
 ## Documentation
 
-Full documentation can be found at [https://hexdocs.pm/exstatic](https://hexdocs.pm/exstatic).
+Full documentation can be found at [https://zappi.hexdocs.pm/exstatic](https://zappi.hexdocs.pm/exstatic).
 
 ## Development
 
@@ -66,9 +69,9 @@ Full documentation can be found at [https://hexdocs.pm/exstatic](https://hexdocs
    ```bash
    mix deps.get
    ```
-3. Compile the project:
+3. Compile the project (set `EXSTATIC_BUILD=true` to build Rust code):
    ```bash
-   mix compile
+   EXSTATIC_BUILD=true mix compile
    ```
 4. Run tests:
    ```bash

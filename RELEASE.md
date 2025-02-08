@@ -68,16 +68,3 @@ mix hex.publish     # Publish the package
 ### Important Notes:
 - You **must have write access** to Zappi's Hex registry to publish (ask Brendon if you don't).
 - **Ensure you are on the `main` branch**, and it matches `origin/main`, as `mix hex.publish` publishes from your **local copy**, not GitHub.
-
-## **6️⃣  Verify Installation**
-
-To confirm users can fetch precompiled NIFs **without needing Rust**, test in a fresh clone:
-
-```sh
-git clone https://github.com/Intellection/exstatic.git
-cd exstatic
-mix deps.get
-mix compile  # Should download precompiled NIFs instead of compiling Rust
-```
-
-If this works **without recompiling Rust**, the release is successful! 🎉

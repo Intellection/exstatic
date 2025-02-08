@@ -27,3 +27,6 @@ exstatic-*.tar
 
 # Shared binary artifacts (compiled NIFs).
 priv/native/*.so
+
+# Ignore checksum file
+checksum-*.exs
