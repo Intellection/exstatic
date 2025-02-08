@@ -11,22 +11,24 @@ defmodule Exstatic.ReleaseHelper do
 
   - `EXSTATIC_GITHUB_TOKEN` – A GitHub personal access token (PAT) with access to private repositories.
   """
+
   @config Mix.Project.config()
   @tag "v#{@config[:version]}"
 
   @doc """
-  Retrieves the GitHub asset download URL and authentication headers. This function first ensures that then Finch
-  HTTP client is started. It then fetches the asset ID for the given file name from the GitHub API and constructs a download URL.
+  Retrieves the GitHub asset download URL and authentication headers.
 
   ## Parameters
+
   - `file_name` (String.t()): The name of the asset file to download.
 
   ## Returns
-  - `{"https://api.github.com/repos/.../assets/{asset_id}", headers}` (tuple): 
-    A tuple containing the download URL and required HTTP headers.
+
+  - `{download_url, headers}` (tuple): A tuple containing the GitHub asset URL and headers.
 
   ## Raises
-  - `RuntimeError`: If the EXSTATIC_GITHUB_TOKEN environment variable is missing or if the asset ID cannot be found.
+
+  - `RuntimeError`: If the `EXSTATIC_GITHUB_TOKEN` environment variable is missing or if the asset ID cannot be found.
 
   ## Example
 
@@ -36,11 +38,9 @@ defmodule Exstatic.ReleaseHelper do
   """
   @spec github_release_url!(String.t()) :: {String.t(), [{String.t(), String.t()}]}
   def github_release_url!(file_name) do
-    start_finch()
+    token = github_personal_access_token!()
 
-    token = System.fetch_env!("EXSTATIC_GITHUB_TOKEN")
-
-    case fetch_github_asset_id(file_name) do
+    case fetch_github_asset_id(file_name, token) do
       {:ok, asset_id} ->
         {asset_url(asset_id),
          [
@@ -54,22 +54,20 @@ defmodule Exstatic.ReleaseHelper do
     end
   end
 
-  defp fetch_github_asset_id(file_name) do
-    start_finch()
-
-    token = github_personal_access_token!()
-
+  defp fetch_github_asset_id(file_name, token) do
     headers = [
       {"Authorization", "token #{token}"},
       {"Accept", "application/vnd.github+json"},
       {"User-Agent", "exstatic-bot"}
     ]
 
-    case Req.get(release_url(), headers: headers) do
-      {:ok, %{status: 200, body: release}} ->
-        find_asset_id(release, file_name)
+    case Tesla.get(release_url(), headers: headers) do
+      {:ok, %Tesla.Env{status: 200, body: release}} ->
+        release
+        |> :json.decode()
+        |> find_asset_id(file_name)
 
-      {:ok, %{status: status, body: body}} ->
+      {:ok, %Tesla.Env{status: status, body: body}} ->
         {:error, "Failed to fetch releases: #{status} #{inspect(body)}"}
 
       {:error, reason} ->
@@ -78,7 +76,7 @@ defmodule Exstatic.ReleaseHelper do
   end
 
   defp asset_url(asset_id) do
-    "https://uploads.github.com/repos/#{@config[:repo]}/releases/#{asset_id}/assets"
+    "https://api.github.com/repos/#{@config[:repo]}/releases/assets/#{asset_id}"
   end
 
   defp release_url, do: "https://api.github.com/repos/#{@config[:repo]}/releases/tags/#{@tag}"
@@ -92,17 +90,8 @@ defmodule Exstatic.ReleaseHelper do
 
   defp github_personal_access_token! do
     case System.get_env("EXSTATIC_GITHUB_TOKEN") do
-      nil ->
-        raise "Missing EXSTATIC_GITHUB_TOKEN environment variable (GitHub personal access token)."
-
-      token ->
-        token
-    end
-  end
-
-  defp start_finch do
-    unless Process.whereis(Req.Finch) do
-      {:ok, _pid} = Finch.start_link(name: Req.Finch)
+      nil -> raise "Missing EXSTATIC_GITHUB_TOKEN environment variable."
+      token -> token
     end
   end
 end
