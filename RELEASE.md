@@ -1,78 +1,66 @@
-# Release Guide for Exstatic
+# Exstatic Release Process
 
-## **1. Update Version**
-Before creating a new release, ensure that the version number is updated in the following files:
+This document outlines the steps required to release a new version of Exstatic, ensuring that both Elixir and native Rust code are properly updated and distributed via precompiled NIFs.
 
-### **Update `mix.exs`**
-Modify the `@version` field:
-```elixir
-defmodule Exstatic.MixProject do
-  use Mix.Project
+## **1️⃣  Bump version in `mix.exs`**
 
-  @version "0.1.1"  # Update to the new version
-  
-  def project do
-    [
-      app: :exstatic,
-      version: @version,
-      elixir: "~> 1.18",
-      ...
-    ]
-  end
-end
+After you've made your code changes, update the version in mix.exs (`@version "x.y.z"`)
+
+Now follow the steps below to release the update.
+
+## **2️⃣  Merge Changes to `main`**
+
+- Open a **Pull Request** including:
+  - Code changes (including the version bump in mix.exs)
+  - A CHANGELOG.md entry for this release.
+
+Once approved and CI passes - **merge to `main`**.
+
+## **3️⃣  Tag & Create a GitHub Release**
+
+1. To create a release, check out the latest `origin/main` (this should be what you just merged), tag the new version and push it:
+
+    ```sh
+    git tag -a vX.Y.Z -m "Release version X.Y.Z"
+    git push origin vX.Y.Z
+    ```
+
+    <strong>Ensure the tag (`vX.Y.Z`) matches the version in `mix.exs`, otherwise, precompiled binaries might not align correctly.</strong>
+
+2. **Go to GitHub → Releases → Create New Release**
+
+   - Use `vX.Y.Z` as the tag.
+   - Copy the corresponding section from CHANGELOG.md as the release notes.
+
+This triggers the `release.yml` GitHub Action, which:
+
+- ✅ Builds precompiled NIFs.
+- ✅ Uploads them to GitHub Releases.
+- ✅ Makes them available for `RustlerPrecompiled`.
+
+## **4️⃣   Publish to Hex.pm**
+
+Once the GitHub release is live, publish the package to Hex.pm:
+
+```sh
+mix hex.user auth   # Authenticate if not already logged in
+mix hex.publish     # Publish the package
 ```
 
----
+### Important Notes:
+- You **must have write access** to Zappi's Hex registry to publish.
+- **Ensure you are on the `main` branch**, and it matches `origin/main`, as `mix hex.publish` publishes from your **local copy**, not GitHub.
 
-## **2. Update `CHANGELOG.md`**
-- Add a new section at the top for the new version.
-- Summarize the key changes.
+## **6️⃣  Verify Installation**
 
-Example:
-```markdown
-## [0.1.1] - YYYY-MM-DD
-### Added
-- Support for additional platforms.
-- Improved CI/CD workflows.
-- Enhanced documentation.
+To confirm users can fetch precompiled NIFs **without needing Rust**, test in a fresh clone:
 
-### Fixed
-- Resolved issue with downloading precompiled NIFs.
+```sh
+git clone https://github.com/Intellection/exstatic.git
+cd exstatic
+mix deps.get
+mix compile  # Should download precompiled NIFs instead of compiling Rust
 ```
 
----
-
-## **3. Commit Version Bump**
-After updating the version, commit the changes:
-```bash
-git add mix.exs native.ex
-git commit -m "Bump version to 0.1.1"
-git push origin main
-```
-
----
-
-## **4. Tag the New Version**
-To create a release, tag the new version and push it:
-```bash
-git tag -a v0.1.1 -m "Release version 0.1.1"
-git push origin v0.1.1
-```
-This will trigger the GitHub Actions release workflow, compiling and uploading precompiled NIFs.
-
----
-
-## **5. Monitor the Release Workflow**
-- Go to **GitHub Actions** and check the **Compile & Upload NIFs** workflow.
-- Verify that all jobs (for Linux and macOS targets) succeed.
-
----
-
-## **5. Verify the Release**
-Once the workflow completes:
-- Go to [GitHub Releases](https://github.com/intellection/exstatic/releases) and confirm that the NIF artifacts are available.
-- Download and test the precompiled NIFs using:
-```elixir
-EXSTATIC_BUILD=false mix rustler_precompiled.download Exstatic.Native --all --print
-```
+If this works **without recompiling Rust**, the release is successful! 🎉
 ---
