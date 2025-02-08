@@ -2,7 +2,8 @@ defmodule Exstatic.MixProject do
   use Mix.Project
 
   @version "0.1.1"
-  @source_url "https://github.com/intellection/exstatic"
+  @repo "Intellection/exstatic"
+  @source_url "https://github.com/#{@repo}"
 
   def project do
     [
@@ -75,7 +76,9 @@ defmodule Exstatic.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
-      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:finch, "~> 0.19"},
+      {:req, "~> 0.5.0"}
     ]
   end
 end
