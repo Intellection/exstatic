@@ -29,3 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 Initial Release: Introduced Exstatic, a statistical distribution library for Elixir with native Rust implementations.
+
+[Unreleased]: https://github.com/Intellection/exstatic/compare/v0.1.1...HEAD
+[v0.1.1]: https://github.com/Intellection/exstatic/compare/v0.1.1...v0.1.0
+[v0.1.0]: https://github.com/Intellection/exstatic/releases/tag/v0.1.0
