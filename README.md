@@ -86,6 +86,9 @@ Full documentation can be found at [https://zappi.hexdocs.pm/exstatic](https://z
 - `native/` - Rust NIF implementations
 - `test/` - Test suite
 
+### Releasing
+See https://github.com/Intellection/exstatic/blob/main/RELEASE.md.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
