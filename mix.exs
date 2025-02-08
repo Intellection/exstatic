@@ -1,7 +1,7 @@
 defmodule Exstatic.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.2"
   @repo "Intellection/exstatic"
   @source_url "https://github.com/#{@repo}"
 

@@ -43,7 +43,7 @@ Add `exstatic` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:exstatic, "~> 0.1.0"}
+    {:exstatic, "~> 0.1.2", organization: "zappi"}
   ]
 end
 ```
