@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.1.2] - 2024-02-08
+
+### Fixed
+
+- **Enabled authenticated downloads from the Exstatic repo:**
+  - Exstatic is a private, direct public URLs are not an option. In v0.1.2 we implement GitHub's private asset download flow, for retrieving the NIF binaries. 
+  - Users must provide a Github Personal Access Token (PAT) (in `EXSTATIC_GITHUB_TOKEN` env var) with sufficient priveleges to download precompiled binaries.
+
 ## [v0.1.1] - 2024-02-07
 
 ### Added
@@ -30,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Initial Release: Introduced Exstatic, a statistical distribution library for Elixir with native Rust implementations.
 
-[Unreleased]: https://github.com/Intellection/exstatic/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/Intellection/exstatic/compare/v0.1.2...HEAD
+[v0.1.2]: https://github.com/Intellection/exstatic/compare/v0.1.2...v0.1.1
 [v0.1.1]: https://github.com/Intellection/exstatic/compare/v0.1.1...v0.1.0
 [v0.1.0]: https://github.com/Intellection/exstatic/releases/tag/v0.1.0
