@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.1.3] - 2024-02-10
+
+### Fixed
+
+- Includes the native source code in the hex release if folks want to build rust backend locally (can be done by setting `EXSTATIC_BUILD=true`
+
+
 ## [v0.1.2] - 2024-02-08
 
 ### Fixed
@@ -38,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Initial Release: Introduced Exstatic, a statistical distribution library for Elixir with native Rust implementations.
 
-[Unreleased]: https://github.com/Intellection/exstatic/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/Intellection/exstatic/compare/v0.1.3...HEAD
+[v0.1.3]: https://github.com/Intellection/exstatic/compare/v0.1.3...v0.1.2
 [v0.1.2]: https://github.com/Intellection/exstatic/compare/v0.1.2...v0.1.1
 [v0.1.1]: https://github.com/Intellection/exstatic/compare/v0.1.1...v0.1.0
 [v0.1.0]: https://github.com/Intellection/exstatic/releases/tag/v0.1.0
