@@ -1,6 +1,6 @@
 # Setting Up a GitHub Personal Access Token for Exstatic
 
-This guide walks you through creating a **GitHub Personal Access Token (PAT)** to allow Exstatic to authenticate and fetch precompiled NIFs from a private repository.
+This guide walks you through creating a **GitHub Personal Access Token (PAT)** to allow Exstatic to authenticate and fetch precompiled NIFs from a private repository. If/when Exstatic becomes a public repo this will not be necessary.
 
 ## 1️⃣  Generate a New Token
 
