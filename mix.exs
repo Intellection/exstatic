@@ -64,7 +64,8 @@ defmodule Exstatic.MixProject do
     [
       name: "exstatic",
       organization: "zappi",
-      files: ~w(lib mix.exs README.md checksum-*.exs),
+      files:
+        ~w(lib native/exstatic/src native/exstatic/Cargo.toml mix.exs README.md checksum-*.exs),
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]

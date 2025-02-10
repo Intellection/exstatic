@@ -1,6 +1,8 @@
 defmodule Exstatic.ReleaseHelper do
   @moduledoc """
-  A helper module for fetching precompiled assets from a private GitHub release.
+  A helper module for fetching precompiled assets from a private GitHub release. 
+
+  If/when Exstatic becomes a public repo this will not be necessary.
 
   This module is designed to work with `RustlerPrecompiled`, allowing it to dynamically
   fetch the correct precompiled NIF binaries from a GitHub release using the GitHub API.
