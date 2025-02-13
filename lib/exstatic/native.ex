@@ -1,14 +1,14 @@
 defmodule Exstatic.Native do
   @moduledoc false
-  version = Mix.Project.config()[:version]
+  config = Mix.Project.config()
 
   use RustlerPrecompiled,
     otp_app: :exstatic,
     crate: "exstatic",
-    base_url: {Exstatic.ReleaseHelper, :github_release_url!},
+    base_url: "#{config[:source_url]}/releases/download/v#{config[:version]}",
     force_build: System.get_env("EXSTATIC_BUILD") == "true",
     nif_versions: ["2.16"],
-    version: version,
+    version: config[:version],
     targets: ~w(
       aarch64-apple-darwin
       x86_64-apple-darwin
