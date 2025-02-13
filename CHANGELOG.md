@@ -7,14 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v0.1.3] - 2024-02-10
+## [v.0.2.0] - 2025-02-13
+
+### Changed
+- The way precompiled binaries are downloaded from Github releases.
+
+## [v0.1.3] - 2025-02-10
 
 ### Fixed
 
 - Includes the native source code in the hex release if folks want to build rust backend locally (can be done by setting `EXSTATIC_BUILD=true`
 
 
-## [v0.1.2] - 2024-02-08
+## [v0.1.2] - 2025-02-08
 
 ### Fixed
 
@@ -22,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Exstatic is a private, direct public URLs are not an option. In v0.1.2 we implement GitHub's private asset download flow, for retrieving the NIF binaries. 
   - Users must provide a Github Personal Access Token (PAT) (in `EXSTATIC_GITHUB_TOKEN` env var) with sufficient priveleges to download precompiled binaries.
 
-## [v0.1.1] - 2024-02-07
+## [v0.1.1] - 2025-02-07
 
 ### Added
 
@@ -40,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - PRs that modify native code or the `release.yml` file.
   - Uploads precompiled NIFs to GitHub Releases when a tag is pushed.
 
-## [v0.1.0] - 2024-02-07
+## [v0.1.0] - 2025-02-07
 
 ### Added
 Initial Release: Introduced Exstatic, a statistical distribution library for Elixir with native Rust implementations.
