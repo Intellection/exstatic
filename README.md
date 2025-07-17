@@ -46,11 +46,6 @@ def deps do
 end
 ```
 
-Precompiled NIF binaries are included in releases for common platforms. Downloading precompiled binaries requires you have read access to this repository,
-you must set the environment variable `EXSTATIC_GITHUB_TOKEN` with a GitHub Personal Access Token (PAT) with sufficient privileges - 
-please see [here](https://github.com/Intellection/exstatic/blob/main/docs/github_token_guide.md) for more details.
-
-
 ## Documentation
 
 Full documentation can be found at [https://zappi.hexdocs.pm/exstatic](https://zappi.hexdocs.pm/exstatic).
