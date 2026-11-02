@@ -80,7 +80,7 @@ defmodule Exstatic.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
-      {:tesla, "~> 1.13.2"},
+      {:tesla, "~> 1.18"},
       {:jason, "~> 1.4"},
       {:mint, "~> 1.0"}
     ]
