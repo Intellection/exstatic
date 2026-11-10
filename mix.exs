@@ -13,7 +13,11 @@ defmodule Exstatic.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      dialyzer: [plt_add_apps: [:mix]],
+      dialyzer: [
+        plt_add_apps: [:mix],
+        plt_local_path: ".plts",
+        plt_core_path: ".plts"
+      ],
       description: description(),
       docs: docs(),
       package: package(),

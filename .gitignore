@@ -30,3 +30,6 @@ priv/native/*.so
 
 # Ignore checksum file
 checksum-*.exs
+
+# Dialyzer PLTs (cached in CI)
+/.plts/
