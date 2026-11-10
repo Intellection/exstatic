@@ -65,6 +65,26 @@ jobs:
       - name: Run Credo (Code Linter)
         run: mix credo --strict
 
+      - name: Restore Dialyzer PLT cache
+        id: plt-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .plts
+          key: dialyzer-plt-${{ runner.os }}-${{ runner.arch }}-${{ matrix.otp_version }}-${{ matrix.elixir_version }}-${{ hashFiles('mix.exs', 'mix.lock') }}
+          # A prefix match lets a lockfile bump update the previous PLT instead of rebuilding it.
+          restore-keys: |
+            dialyzer-plt-${{ runner.os }}-${{ runner.arch }}-${{ matrix.otp_version }}-${{ matrix.elixir_version }}-
+
+      - name: Build Dialyzer PLT
+        run: mix dialyzer --plt
+
+      - name: Save Dialyzer PLT cache
+        if: steps.plt-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .plts
+          key: ${{ steps.plt-cache.outputs.cache-primary-key }}
+
       - name: Run Dialyzer (Static Analysis)
         run: mix dialyzer
 
