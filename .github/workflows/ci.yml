@@ -18,6 +18,9 @@ jobs:
           - otp_version: "27.2"
             elixir_version: "1.18"
             os: ubuntu-latest
+          - otp_version: "29.1.2"
+            elixir_version: "1.20.5"
+            os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
     name: Test on Elixir ${{ matrix.elixir_version }} / OTP ${{ matrix.otp_version }}

@@ -1,4 +1,4 @@
-erlang 27.2
-elixir 1.18.0
+erlang 29.1.2
+elixir 1.20.5-otp-29
 rust nightly
 python 3.13.1
